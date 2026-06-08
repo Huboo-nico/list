@@ -187,9 +187,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening at http://localhost:${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server listening at http://localhost:${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
