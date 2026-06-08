@@ -1,0 +1,8 @@
+{
+  "name": "Corporate Research Hub",
+  "description": "Herramienta avanzada de análisis de mercado, fichas técnicas corporativas e investigación de marcas potenciada por IA con Google Search Grounding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
