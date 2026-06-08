@@ -63,7 +63,238 @@ function getLogoIcon(name: string) {
   return IconMap[name] || Building2;
 }
 
+const DICTIONARY: Record<"ES" | "EN", Record<string, string>> = {
+  ES: {
+    activeWorkspace: "Workspace de Analista: Activo",
+    objectiveLocator: "Localizador de Objetivos • 2026",
+    groundedResearch: "Investigación Grounded",
+    platformTitle: "Plataforma de Inteligencia Corporativa • Real-Time 2026",
+    titleLeft: "Research",
+    titleRight: "Lab Base",
+    headerSubtitle: "Análisis dinámico de mercado e investigación profunda de competidores de marcas. Descubre, clasifica e investiga marcas en tiempo real mediante el motor de búsqueda de IA.",
+    addCompany: "Agregar Empresa",
+    resetDatabase: "Restablecer Base",
+    confirmReset: "¿Deseas restablecer la base de datos a su estado inicial de 13 empresas?",
+    totalAnalyzed: "Total Analizadas",
+    totalAnalyzedSub: "Empresas en catálogo",
+    presenceSpain: "Presencia en España",
+    presenceSpainSub: "Sedes físicas activas",
+    presenceEcommerce: "Presencia E-commerce",
+    presenceEcommerceSub: "con canal online",
+    modelB2B: "Modelo de Ventas B2B",
+    modelB2BSub: "con canal B2B",
+    strategicFilters: "Filtros Estratégicos & Búsqueda",
+    smartSearch: "Búsqueda Inteligente",
+    searchPlaceholder: "Buscar por nombre, sector, web...",
+    regionsCountries: "Regiones / Países",
+    all: "Todos",
+    spain: "España",
+    netherlands: "Países Bajos",
+    others: "Otros",
+    ecommerceChannel: "Canal E-commerce",
+    onlineShop: "Tienda Online (Sí)",
+    noOnlineShop: "Sin Tienda Online (No)",
+    salesModel: "Modelo de Ventas",
+    onlyB2B: "Únicamente B2B",
+    onlyB2C: "Únicamente B2C",
+    bothB2B_B2C: "B2B y B2C",
+    foundTotal: "fichas de análisis corporativo coincidiendo con tus filtros prioritarios:",
+    investigateLabel: "Investigar Marca",
+    deleteLabel: "Eliminar",
+    confirmDelete: "¿Estás seguro de que deseas eliminar esta empresa de tu lista de análisis?",
+    notSpecified: "No especificado",
+    analystObserv: "Observaciones de analista:",
+    emptyStateTitle: "No se encontraron coincidencias",
+    emptyStateSub: "Prueba a modificar los filtros estratégicos superiores o agrega una nueva marca premium directamente a la lista.",
+    
+    // Form / Modal fields
+    modalTitle: "Agregar Nueva Ficha Corporativa",
+    modalSub: "Ingresa el nombre de la empresa y deja que nuestro motor de Inteligencia Artificial investigue y autocomplete las variables técnicas en tiempo real.",
+    companyNameLabel: "Nombre de la Empresa / Marca *",
+    inputCompPlaceholder: "Ej. Mercadona, Zara, Heineken, ASML...",
+    autocompleteBtn: "Autocompletar con IA Grounding",
+    autocompleting: "Investigando en la web...",
+    sectorLabel: "Sector o Industria Principal *",
+    webLabel: "Sitio Web Corporativo *",
+    brandColorLabel: "Color Corporativo (Hex)",
+    telephoneLabel: "Teléfono Contacto",
+    officialEmailLabel: "Email Oficial",
+    linkedinLabel: "LinkedIn de Empresa",
+    spainPresenceLabel: "Presencia en España",
+    spainPresenceYes: "Sí, opera en España",
+    spainPresenceNo: "No opera en España",
+    countryCodeLabel: "Cód. País Sede (Dos Letras)",
+    logoIconLabel: "Icono Representativo (Lucide)",
+    iconDefault: "Sede / Edificio (Default)",
+    iconCoffee: "Café / Hostelería",
+    iconBook: "Libros / Editorial",
+    iconSoda: "Bebidas / Refrescos",
+    iconWrench: "Herramientas o Soporte",
+    iconGrape: "Alimentación / Venta",
+    iconWater: "Logística de Aguas",
+    iconCap: "Educación y Formación",
+    iconTruck: "Distribución o Consumo",
+    iconCard: "Servicios Financieros / Fintech",
+    iconHeart: "Cuidado / Salud / Bienestar",
+    iconGift: "Regalos / E-commerce",
+    brandSummaryLabel: "Resumen / Descripción corta *",
+    summaryPlaceholder: "Escribe un breve resumen de la actividad comercial de la empresa...",
+    observationsLabel: "Observaciones / Notas de Analista (Opcional)",
+    observationsPlaceholder: "Ej. Datos pendientes de validar con compras",
+    cancel: "Cancelar",
+    saveSheet: "Registrar Ficha",
+    enterNameSectorRequired: "El nombre y el sector son campos obligatorios.",
+    pleaseEnterNameBeforeAutocomplete: "Por favor, ingresa el nombre de la empresa antes de autocompletar.",
+    autocompleteFailed: "No se pudo autocompletar:",
+    
+    // Detailed Profile sheet Drawer
+    profileTitle: "Ficha Técnica Corporativa",
+    profileEcommerceTitle: "Información Comercial",
+    profileEcommerceLabel: "Canal E-commerce",
+    profileModelLabel: "Modelo de Ventas",
+    profileSpainLabel: "Presencia España",
+    profileSpainYes: "Sí (Oficina local)",
+    profileSpainNo: "No (Remoto)",
+    profileContactsTitle: "Contactos & Canales",
+    profileAuditBtn: "Auditar con IA Grounding",
+    profileCloseBtn: "Cerrar",
+    
+    // AI search Grounding research report list Drawer
+    researchingMainTitle: "Investigación e Identidad Visual",
+    connectingSearchTitle: "Conectando con Google Search Grounding...",
+    connectingSub: "Consultando motores de búsqueda en tiempo real (2026) y ejecutando modelo {model} para recabar perfiles, rediseños de logotipo y recomendaciones visuales de diseño.",
+    invokingSearch: "Invocando buscador",
+    extractingSources: "Extrayendo fuentes",
+    processing: "PROCESANDO...",
+    communicationFailed: "Fallo de Comunicación con Gemini",
+    retryBtn: "Reintentar Auditoría",
+    apiPlaceholderAlert: "Comprueba que la clave GEMINI_API_KEY se encuentre configurada correctamente.",
+    citedSources: "Fuentes Citadas en la Búsqueda Real",
+    citedSourcesSub: "La IA recuperó y contrastó información en tiempo real de los siguientes enlaces web:",
+    groundingFooterMsg: "Realizado el {time}. Análisis basado en Grounding de Google Search.",
+    printBtn: "Imprimir Reporte",
+    acceptBtn: "Aceptar"
+  },
+  EN: {
+    activeWorkspace: "Analyst Workspace: Active",
+    objectiveLocator: "Target Locator • 2026",
+    groundedResearch: "Grounded Research",
+    platformTitle: "Corporate Intelligence Platform • Real-Time 2026",
+    titleLeft: "Research",
+    titleRight: "Lab Base",
+    headerSubtitle: "Dynamic market analysis and deep brand competitor research. Discover, classify, and audit brands in real time through our AI-integrated structured search engine.",
+    addCompany: "Add Company",
+    resetDatabase: "Reset Database",
+    confirmReset: "Do you want to reset the database to its initial state of 13 companies?",
+    totalAnalyzed: "Total Analyzed",
+    totalAnalyzedSub: "Companies in catalog",
+    presenceSpain: "Presence in Spain",
+    presenceSpainSub: "Active physical HQs",
+    presenceEcommerce: "E-commerce Presence",
+    presenceEcommerceSub: "with online channel",
+    modelB2B: "B2B Sales Model",
+    modelB2BSub: "with B2B channel",
+    strategicFilters: "Strategic Filters & Search",
+    smartSearch: "Smart Search",
+    searchPlaceholder: "Search by name, sector, web...",
+    regionsCountries: "Regions / Countries",
+    all: "All",
+    spain: "Spain",
+    netherlands: "Netherlands",
+    others: "Others",
+    ecommerceChannel: "E-commerce Channel",
+    onlineShop: "Online Shop (Yes)",
+    noOnlineShop: "No Online Shop (No)",
+    salesModel: "Sales Model",
+    onlyB2B: "B2B Only",
+    onlyB2C: "B2C Only",
+    bothB2B_B2C: "B2B and B2C",
+    foundTotal: "corporate analysis records matching your priority filters:",
+    investigateLabel: "Research Brand",
+    deleteLabel: "Delete",
+    confirmDelete: "Are you sure you want to delete this company from your analysis list?",
+    notSpecified: "Not specified",
+    analystObserv: "Analyst remarks:",
+    emptyStateTitle: "No matches found",
+    emptyStateSub: "Try modifying the active strategic filters or add a new premium brand directly to the list.",
+    
+    // Form / Modal fields
+    modalTitle: "Add New Corporate Record",
+    modalSub: "Enter the company name and let our AI engine research and autocomplete technical variables in real-time.",
+    companyNameLabel: "Company / Brand Name *",
+    inputCompPlaceholder: "e.g., Mercadona, Zara, Heineken, ASML...",
+    autocompleteBtn: "Autocomplete with AI Grounding",
+    autocompleting: "Researching live web...",
+    sectorLabel: "Primary Sector / Industry *",
+    webLabel: "Official Corporate Website *",
+    brandColorLabel: "Brand Color (Hex)",
+    telephoneLabel: "Contact Phone",
+    officialEmailLabel: "Official Email",
+    linkedinLabel: "Company LinkedIn",
+    spainPresenceLabel: "Presence in Spain",
+    spainPresenceYes: "Yes, operates in Spain",
+    spainPresenceNo: "No, does not operate in Spain",
+    countryCodeLabel: "Headquarters Country Code (Two Letters)",
+    logoIconLabel: "Representative Icon (Lucide)",
+    iconDefault: "HQ / Building (Default)",
+    iconCoffee: "Coffee / Catering",
+    iconBook: "Books / Editorial",
+    iconSoda: "Beverages / Drinks",
+    iconWrench: "Tools & Support",
+    iconGrape: "Food / Retail",
+    iconWater: "Water Logistics",
+    iconCap: "Education & Training",
+    iconTruck: "Distribution / Consumer Goods",
+    iconCard: "Financial Services / Fintech",
+    iconHeart: "Care / Health / Wellness",
+    iconGift: "Gifts / E-commerce",
+    brandSummaryLabel: "Summary / Short Description *",
+    summaryPlaceholder: "Write a brief summary of the company's Business activities...",
+    observationsLabel: "Remarks / Analyst Notes (Optional)",
+    observationsPlaceholder: "e.g., Data pending validation with purchasing",
+    cancel: "Cancel",
+    saveSheet: "Register Record",
+    enterNameSectorRequired: "Name and sector are required fields.",
+    pleaseEnterNameBeforeAutocomplete: "Please enter the company name before autocompleting.",
+    autocompleteFailed: "Could not autocomplete:",
+    
+    // Detailed Profile sheet Drawer
+    profileTitle: "Corporate Technical Sheet",
+    profileEcommerceTitle: "Commercial Information",
+    profileEcommerceLabel: "E-commerce Channel",
+    profileModelLabel: "Sales Model",
+    profileSpainLabel: "Spain Presence",
+    profileSpainYes: "Yes (Local HQ)",
+    profileSpainNo: "No (Remote)",
+    profileContactsTitle: "Contacts & Channels",
+    profileAuditBtn: "Audit with AI Grounding",
+    profileCloseBtn: "Close",
+    
+    // AI search Grounding research report list Drawer
+    researchingMainTitle: "Research & Visual Identity",
+    connectingSearchTitle: "Connecting with Google Search Grounding...",
+    connectingSub: "Inquiring search engines in real-time (2026) and executing {model} model to collect profiles, logo redesigns, and aesthetic UI recommendations.",
+    invokingSearch: "Invoking search engine",
+    extractingSources: "Extracting web sources",
+    processing: "PROCESSING...",
+    communicationFailed: "Intelligent Communication Error",
+    retryBtn: "Retry Audit",
+    apiPlaceholderAlert: "Verify that the GEMINI_API_KEY secret is correctly configured.",
+    citedSources: "Sources Cited in Real-Time Search",
+    citedSourcesSub: "The AI retrieved and cross-referenced info in real-time from the following web domains:",
+    groundingFooterMsg: "Conducted on {time}. Analysis powered by Google Search Grounding.",
+    printBtn: "Print Report",
+    acceptBtn: "Accept"
+  }
+};
+
 export default function App() {
+  const [lang, setLang] = useState<"ES" | "EN">("ES");
+
+  const t = (key: string): string => {
+    return DICTIONARY[lang][key] || key;
+  };
+
   // Persistence state in localStorage
   const [companies, setCompanies] = useState<Company[]>(() => {
     const saved = localStorage.getItem("research_companies");
@@ -152,7 +383,7 @@ export default function App() {
       const response = await fetch("/api/generateCompanyDraft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyName: draftName })
+        body: JSON.stringify({ companyName: draftName, lang })
       });
 
       if (!response.ok) {
@@ -250,7 +481,7 @@ export default function App() {
       const response = await fetch("/api/research", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyName: company.name }),
+        body: JSON.stringify({ companyName: company.name, lang }),
       });
 
       if (!response.ok) {
@@ -316,13 +547,31 @@ export default function App() {
       <div className="bg-slate-900 py-3 px-6 border-b-2 border-slate-900 text-center text-xs text-slate-300 font-mono flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse border border-slate-900"></span>
-          <span className="font-bold uppercase tracking-wider">Workspace de Analista: Activo</span>
+          <span className="font-bold uppercase tracking-wider">{t("activeWorkspace")}</span>
         </div>
         <div className="hidden sm:block">
-          <span className="uppercase tracking-widest text-[10px] bg-slate-800 text-slate-300 px-2 py-1 border border-slate-700 font-bold">Localizador de Objetivos • 2026</span>
+          <span className="uppercase tracking-widest text-[10px] bg-slate-800 text-slate-300 px-2 py-1 border border-slate-700 font-bold">{t("objectiveLocator")}</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-slate-400 font-bold text-xs uppercase tracking-wider">Investigación Grounded</span>
+          <div className="flex items-center gap-1 border border-slate-700 bg-slate-950 p-0.5">
+            <button
+              onClick={() => setLang("ES")}
+              className={`px-1.5 py-0.5 text-[9px] font-black uppercase transition cursor-pointer ${
+                lang === "ES" ? "bg-indigo-600 text-white" : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              ES
+            </button>
+            <button
+              onClick={() => setLang("EN")}
+              className={`px-1.5 py-0.5 text-[9px] font-black uppercase transition cursor-pointer ${
+                lang === "EN" ? "bg-indigo-600 text-white" : "text-slate-400 hover:text-slate-200"
+              }`}
+            >
+              EN
+            </button>
+          </div>
+          <span className="text-slate-400 font-bold text-xs uppercase tracking-wider hidden md:inline">{t("groundedResearch")}</span>
         </div>
       </div>
 
@@ -333,33 +582,33 @@ export default function App() {
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-indigo-600 font-mono text-xs font-black uppercase tracking-wider mb-2">
               <Compass className="w-4 h-4 animate-spin-slow" />
-              <span>Plataforma de Inteligencia Corporativa • Real-Time 2026</span>
+              <span>{t("platformTitle")}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase italic leading-none">
-              Research<span className="text-indigo-600">Lab</span> Base
+              {t("titleLeft")}<span className="text-indigo-600">{t("titleRight")}</span>
             </h1>
             <p className="mt-3 text-sm text-slate-600 font-medium leading-relaxed">
-              Análisis dinámico de mercado e investigación profunda de competidores de marcas. Descubre, clasifica e investiga marcas en tiempo real mediante el motor de búsqueda estructurado con soporte de IA.
+              {t("headerSubtitle")}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 self-start md:self-center shrink-0">
+          <div className="flex flex-wrap items-center gap-3 self-start md:self-center shrink-0">
             <button
               onClick={() => setIsCreateModalOpen(true)}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 border-2 border-slate-900 font-black text-xs uppercase tracking-wider flex items-center gap-2 transition cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
             >
-              <Plus className="w-4 h-4 stroke-[3px]" /> Agregar Empresa
+              <Plus className="w-4 h-4 stroke-[3px]" /> {t("addCompany")}
             </button>
             <button
               onClick={() => {
-                if (confirm("¿Deseas restablecer la base de datos a su estado inicial de 13 empresas?")) {
+                if (confirm(t("confirmReset"))) {
                   setCompanies(INITIAL_COMPANIES);
                   localStorage.removeItem("research_companies");
                 }
               }}
               className="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 px-5 py-3 font-black text-xs uppercase tracking-wider transition cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
             >
-              Restablecer Base
+              {t("resetDatabase")}
             </button>
           </div>
         </header>
@@ -368,35 +617,35 @@ export default function App() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
           
           <div className="bg-white border-2 border-slate-900 p-5 relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">Total Analizadas</span>
+            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">{t("totalAnalyzed")}</span>
             <div className="text-4xl font-black mt-1 text-slate-900 tracking-tighter">
               {statsTotal.toString().padStart(2, '0')}
             </div>
-            <div className="text-xs text-indigo-600 font-bold uppercase mt-1">Empresas en catálogo</div>
+            <div className="text-xs text-indigo-600 font-bold uppercase mt-1">{t("totalAnalyzedSub")}</div>
           </div>
 
           <div className="bg-white border-2 border-slate-900 p-5 relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">Presencia en España</span>
+            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">{t("presenceSpain")}</span>
             <div className="text-4xl font-black mt-1 text-slate-900 tracking-tighter">
               {statsSpain.toString().padStart(2, '0')}
             </div>
-            <div className="text-xs text-emerald-600 font-bold uppercase mt-1">Sedes físicas activas</div>
+            <div className="text-xs text-emerald-600 font-bold uppercase mt-1">{t("presenceSpainSub")}</div>
           </div>
 
           <div className="bg-white border-2 border-slate-900 p-5 relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">Presencia E-commerce</span>
+            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">{t("presenceEcommerce")}</span>
             <div className="text-4xl font-black mt-1 text-slate-900 tracking-tighter">
               {statsTotal > 0 ? `${Math.round((statsEcommerce / statsTotal) * 100)}%` : "0%"}
             </div>
-            <div className="text-xs text-amber-600 font-bold uppercase mt-1">{statsEcommerce} con canal online</div>
+            <div className="text-xs text-amber-600 font-bold uppercase mt-1">{statsEcommerce} {t("presenceEcommerceSub")}</div>
           </div>
 
           <div className="bg-white border-2 border-slate-900 p-5 relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">Modelo de Ventas B2B</span>
+            <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block">{t("modelB2B")}</span>
             <div className="text-4xl font-black mt-1 text-slate-900 tracking-tighter">
               {statsTotal > 0 ? `${Math.round((statsB2B / statsTotal) * 100)}%` : "0%"}
             </div>
-            <div className="text-xs text-purple-600 font-bold uppercase mt-1">{statsB2B} empresas con canal B2B</div>
+            <div className="text-xs text-purple-600 font-bold uppercase mt-1">{statsB2B} {t("modelB2BSub")}</div>
           </div>
 
         </div>
@@ -405,20 +654,20 @@ export default function App() {
         <section className="bg-white border-2 border-slate-900 p-6 mb-8 shadow-[5px_5px_0px_0px_rgba(15,23,42,1)]">
           <div className="flex items-center gap-2 text-xs text-slate-900 font-black uppercase tracking-wider mb-5 pb-2 border-b-2 border-slate-100">
             <Filter className="w-4 h-4 text-indigo-600 stroke-[3px]" />
-            <span>Filtros Estratégicos & Búsqueda</span>
+            <span>{t("strategicFilters")}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             
             {/* Search inputs */}
             <div className="lg:col-span-1 relative">
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Búsqueda Inteligente</label>
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">{t("smartSearch")}</label>
               <div className="relative">
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Buscar por nombre, sector, web..."
+                  placeholder={t("searchPlaceholder")}
                   className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-4 py-2.5 pl-10 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-0 transition"
                 />
                 <Search className="w-4 h-4 text-slate-900 absolute left-3.5 top-3.5 stroke-[2.5px]" />
@@ -427,13 +676,13 @@ export default function App() {
 
             {/* Country Selector */}
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Regiones / Países</label>
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">{t("regionsCountries")}</label>
               <div className="flex gap-2 flex-wrap">
                 {[
-                  { id: "ALL", label: "Todos" },
-                  { id: "ES", label: "🇪🇸 España" },
-                  { id: "NL", label: "🇳🇱 Países Bajos" },
-                  { id: "OTHER", label: "Otros" }
+                  { id: "ALL", label: lang === "ES" ? "Todos" : "All" },
+                  { id: "ES", label: "🇪🇸 " + (lang === "ES" ? "España" : "Spain") },
+                  { id: "NL", label: "🇳🇱 " + (lang === "ES" ? "Países Bajos" : "Netherlands") },
+                  { id: "OTHER", label: lang === "ES" ? "Otros" : "Others" }
                 ].map((item) => (
                   <button
                     key={item.id}
@@ -452,13 +701,13 @@ export default function App() {
 
             {/* Business Model Selector */}
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Modelo de Negocio</label>
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">{t("salesModel")}</label>
               <div className="flex gap-2 flex-wrap">
                 {[
-                  { id: "ALL", label: "Todos" },
+                  { id: "ALL", label: lang === "ES" ? "Todos" : "All" },
                   { id: "B2B", label: "B2B" },
                   { id: "B2C", label: "B2C" },
-                  { id: "BOTH", label: "Híbrido" }
+                  { id: "BOTH", label: lang === "ES" ? "Híbrido" : "Hybrid" }
                 ].map((item) => (
                   <button
                     key={item.id}
@@ -477,12 +726,12 @@ export default function App() {
 
             {/* E-commerce support */}
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Canal E-commerce</label>
+              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">{t("ecommerceChannel")}</label>
               <div className="flex gap-2 flex-wrap">
                 {[
-                  { id: "ALL", label: "Todos" },
-                  { id: "Sí", label: "Sí vende" },
-                  { id: "No", label: "No vende" }
+                  { id: "ALL", label: lang === "ES" ? "Todos" : "All" },
+                  { id: "Sí", label: lang === "ES" ? "Sí vende" : "Has online shop" },
+                  { id: "No", label: lang === "ES" ? "No vende" : "No online shop" }
                 ].map((item) => (
                   <button
                     key={item.id}
@@ -505,7 +754,7 @@ export default function App() {
           {(searchTerm !== "" || selectedCountry !== "ALL" || selectedModel !== "ALL" || selectedEcommerce !== "ALL") && (
             <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-200 text-xs">
               <span className="text-slate-500 font-medium">
-                Filtrado mostrando <strong className="text-slate-900 font-extrabold">{filteredCompanies.length}</strong> de <strong className="text-slate-900 font-extrabold">{companies.length}</strong> empresas.
+                {lang === "ES" ? "Filtrado mostrando " : "Filtered showing "} <strong className="text-slate-900 font-extrabold">{filteredCompanies.length}</strong> {lang === "ES" ? " de " : " of "} <strong className="text-slate-900 font-extrabold">{companies.length}</strong> {lang === "ES" ? " empresas." : " companies."}
               </span>
               <button
                 onClick={() => {
@@ -516,7 +765,7 @@ export default function App() {
                 }}
                 className="text-indigo-600 hover:text-indigo-800 underline font-black uppercase tracking-wider cursor-pointer"
               >
-                Limpiar todos los filtros
+                {lang === "ES" ? "Limpiar todos los filtros" : "Clear all filters"}
               </button>
             </div>
           )}
@@ -529,11 +778,11 @@ export default function App() {
           <main className="xl:col-span-3">
             
             {filteredCompanies.length === 0 ? (
-              <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-12 text-center">
-                <AlertCircle className="w-10 h-10 text-[#4B5563] mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-white mb-1">Sin Resultados encontrados</h3>
-                <p className="text-[#94A3B8] text-sm max-w-md mx-auto">
-                  Ninguna empresa en la base de datos coincide con los criterios de búsqueda o filtros seleccionados en este momento.
+              <div className="bg-white border-2 border-slate-900 p-12 text-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+                <AlertCircle className="w-10 h-10 text-slate-450 mx-auto mb-3" />
+                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight mb-1">{t("emptyStateTitle")}</h3>
+                <p className="text-slate-600 text-xs max-w-md mx-auto mb-4 leading-relaxed">
+                  {t("emptyStateSub")}
                 </p>
                 <button
                   onClick={() => {
@@ -542,9 +791,9 @@ export default function App() {
                     setSelectedModel("ALL");
                     setSelectedEcommerce("ALL");
                   }}
-                  className="mt-4 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 font-medium text-xs px-4 py-2 rounded-lg transition"
+                  className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-4 py-2 hover:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all cursor-pointer border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] uppercase tracking-wider"
                 >
-                  Restablecer filtros
+                  {lang === "ES" ? "Restablecer filtros" : "Reset filters"}
                 </button>
               </div>
             ) : (
@@ -604,12 +853,20 @@ export default function App() {
                           {/* Technical attributes list */}
                           <div className="space-y-2 border-t pt-4 border-slate-100 text-xs mb-4">
                             <div className="flex justify-between">
-                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Canal E-commerce:</span>
-                              <span className="font-black text-slate-900 uppercase">{company.ecommerce}</span>
+                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                {lang === "ES" ? "Canal E-commerce:" : "E-commerce Channel:"}
+                              </span>
+                              <span className="font-black text-slate-900 uppercase">
+                                {company.ecommerce === "Sí" ? (lang === "ES" ? "Sí" : "Yes") : (lang === "ES" ? "No" : "No")}
+                              </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Modelo Ventas:</span>
-                              <span className="font-black text-slate-900 uppercase">{company.model}</span>
+                              <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                {lang === "ES" ? "Modelo Ventas:" : "Sales Model:"}
+                              </span>
+                              <span className="font-black text-slate-900 uppercase">
+                                {company.model === "B2B y B2C" ? (lang === "ES" ? "B2B y B2C" : "B2B & B2C") : company.model}
+                              </span>
                             </div>
                           </div>
 
@@ -665,13 +922,13 @@ export default function App() {
                             className="flex-1 bg-indigo-600 hover:bg-indigo-700 border-2 border-slate-900 text-white text-xs font-black uppercase tracking-wider py-2.5 px-3 transition cursor-pointer text-center shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] flex items-center justify-center gap-1.5 disabled:opacity-50"
                           >
                             <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
-                            <span>Investigar IA</span>
+                            <span>{lang === "ES" ? "Investigar IA" : "AI Research"}</span>
                           </button>
                           
                           <button
                             onClick={() => setSelectedCompanyDetail(company)}
                             className="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 text-xs font-black uppercase py-2.5 px-3.5 transition flex items-center justify-center cursor-pointer shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
-                            title="Ver Ficha Completa"
+                            title={lang === "ES" ? "Ver Ficha Completa" : "View Full Sheet"}
                           >
                             <FileText className="w-4 h-4" />
                           </button>
@@ -679,7 +936,7 @@ export default function App() {
                           <button
                             onClick={(e) => handleDeleteCompany(company.id, e)}
                             className="text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-900 p-2.5 transition shrink-0 cursor-pointer"
-                            title="Eliminar Empresa"
+                            title={lang === "ES" ? "Eliminar Empresa" : "Delete Company"}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -702,15 +959,17 @@ export default function App() {
             <div className="bg-white border-2 border-slate-900 p-5 relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
               <h3 className="text-sm font-black text-slate-900 uppercase tracking-tighter mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-indigo-650" />
-                <span>¿Cómo funciona el Research?</span>
+                <span>{lang === "ES" ? "¿Cómo funciona el Research?" : "How does Research work?"}</span>
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed mb-3">
-                Selecciona cualquier empresa y haz clic en <strong>Investigar IA</strong>. Nuestro backend llamará de forma segura a Gemini en tiempo real realizando búsquedas automáticas vía Google para:
+                {lang === "ES" 
+                  ? "Selecciona cualquier empresa y haz clic en Investigar IA. Nuestro backend llamará de forma segura a Gemini en tiempo real realizando búsquedas automáticas vía Google para:" 
+                  : "Select any company and click AI Research. Our backend securely queries Gemini in real-time, performing automatic web searches on Google to:"}
               </p>
               <ul className="text-xs text-slate-600 font-black list-disc list-inside space-y-1 mb-2">
-                <li>Analizar su logotipo real conocido.</li>
-                <li>Proponer un rediseño moderno (UI/UX).</li>
-                <li>Evaluar su viabilidad digital.</li>
+                <li>{lang === "ES" ? "Analizar su logotipo real conocido." : "Analyze its real-world known logo aesthetics."}</li>
+                <li>{lang === "ES" ? "Proponer un rediseño moderno (UI/UX)." : "Propose a modern redesigned UI/UX aesthetic."}</li>
+                <li>{lang === "ES" ? "Evaluar su viabilidad digital." : "Evaluate its digital e-commerce readiness."}</li>
               </ul>
               <div className="text-[10px] text-indigo-600 font-mono font-black mt-3 p-2 bg-slate-50 rounded-none border border-slate-900">
                 ⚡ Grounding: Google Search 2026
@@ -720,23 +979,25 @@ export default function App() {
 
             {/* Global Actions */}
             <div className="bg-white border-2 border-slate-900 p-5 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-              <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Sesión de Análisis</h3>
+              <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
+                {lang === "ES" ? "Sesión de Análisis" : "Analysis Session"}
+              </h3>
               <div className="space-y-2">
                 <button
                   onClick={() => {
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(companies, null, 2));
                     const dlAnchorElem = document.createElement('a');
                     dlAnchorElem.setAttribute("href", dataStr);
-                    dlAnchorElem.setAttribute("download", "corporate-research-database-2026.json");
+                    dlAnchorElem.setAttribute("download", `corporate-research-database-2026-${lang.toLowerCase()}.json`);
                     dlAnchorElem.click();
                   }}
                   className="w-full bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 text-xs font-black uppercase tracking-wider py-2.5 px-3 rounded-none transition flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
                 >
                   <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
-                  <span>Exportar DB a JSON</span>
+                  <span>{lang === "ES" ? "Exportar DB a JSON" : "Export DB to JSON"}</span>
                 </button>
                 <div className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-wider mt-2">
-                  Los datos se guardan localmente.
+                  {lang === "ES" ? "Los datos se guardan localmente." : "Data is saved locally."}
                 </div>
               </div>
             </div>
@@ -758,7 +1019,9 @@ export default function App() {
             <div className="flex justify-between items-center pb-4 border-b-2 border-slate-200 mb-6">
               <div className="flex items-center gap-2">
                 <Building className="w-5 h-5 text-indigo-650 stroke-[2.5px]" />
-                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter">Agregar Nueva Empresa</h3>
+                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter">
+                  {lang === "ES" ? "Agregar Nueva Empresa" : "Add New Company"}
+                </h3>
               </div>
               <button
                 onClick={() => {
@@ -775,16 +1038,18 @@ export default function App() {
             <div className="bg-indigo-50 border-2 border-indigo-600 p-4 mb-6">
               <h4 className="text-sm font-black text-indigo-950 flex items-center gap-1.5 mb-1.5 uppercase tracking-wide">
                 <Sparkles className="w-4 h-4 text-indigo-600 animate-pulse" />
-                <span>Autocompletado Inteligente (Grounding Activo)</span>
+                <span>{lang === "ES" ? "Autocompletado Inteligente (Grounding Activo)" : "Smart Autocomplete (Active Grounding)"}</span>
               </h4>
               <p className="text-xs text-slate-600 font-medium mb-3">
-                Escribe únicamente el nombre comercial de la empresa en el campo inferior y presiona autocompletar. Buscaremos su información real en Google para rellenar la ficha técnicamente completa de forma instantánea.
+                {lang === "ES"
+                  ? "Escribe únicamente el nombre comercial de la empresa en el campo inferior y presiona autocompletar. Buscaremos su información real en Google para rellenar la ficha técnicamente completa de forma instantánea."
+                  : "Type only the commercial name of the company below and press autocomplete. We will query Google in real-time to autofill the company's full technical sheet."}
               </p>
               
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Nombre de la empresa (Ej. Zara, Grefusa, Mercadona, Cabify...)"
+                  placeholder={lang === "ES" ? "Nombre de la empresa (Ej. Zara, Grefusa, Mercadona, Cabify...)" : "Company name (e.g. Zara, Mercadona, Cabify...)"}
                   value={draftName}
                   onChange={(e) => setDraftName(e.target.value)}
                   className="flex-1 bg-white border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
@@ -798,12 +1063,12 @@ export default function App() {
                   {isCompletingDraft ? (
                     <>
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      <span>Investigando...</span>
+                      <span>{lang === "ES" ? "Investigando..." : "Investigating..."}</span>
                     </>
                   ) : (
                     <>
                       <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
-                      <span>Completar</span>
+                      <span>{lang === "ES" ? "Completar" : "Autocomplete"}</span>
                     </>
                   )}
                 </button>
@@ -821,11 +1086,13 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Sector Industrial *</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Sector Industrial *" : "Industrial Sector *"}
+                  </label>
                   <input
                     type="text"
                     required
-                    placeholder="Ej. Alimentación, Automoción, Finanzas..."
+                    placeholder={lang === "ES" ? "Ej. Alimentación, Automoción, Finanzas..." : "e.g. Food, Automotive, Finance..."}
                     value={formSector}
                     onChange={(e) => setFormSector(e.target.value)}
                     className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
@@ -833,7 +1100,9 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Sitio Web Corporativo</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Sitio Web Corporativo" : "Corporate Website"}
+                  </label>
                   <input
                     type="text"
                     placeholder="Ej. sgel.es"
@@ -848,32 +1117,38 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Canal E-commerce</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Canal E-commerce" : "E-commerce Channel"}
+                  </label>
                   <select
                     value={formEcommerce}
                     onChange={(e) => setFormEcommerce(e.target.value as "Sí" | "No")}
                     className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
                   >
-                    <option value="Sí">Sí vende online</option>
-                    <option value="No">No (Venta física/B2B)</option>
+                    <option value="Sí">{lang === "ES" ? "Sí vende online" : "Yes, sells online"}</option>
+                    <option value="No">{lang === "ES" ? "No (Venta física/B2B)" : "No (Physical/B2B sales)"}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Modelo de Venta</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Modelo de Venta" : "Sales Model"}
+                  </label>
                   <select
                     value={formModel}
                     onChange={(e) => setFormModel(e.target.value as any)}
                     className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
                   >
-                    <option value="B2B">Únicamente B2B</option>
-                    <option value="B2C">Únicamente B2C</option>
-                    <option value="B2B y C">B2B y B2C (Híbrido)</option>
+                    <option value="B2B">{lang === "ES" ? "Únicamente B2B" : "Strictly B2B"}</option>
+                    <option value="B2C">{lang === "ES" ? "Únicamente B2C" : "Strictly B2C"}</option>
+                    <option value="B2B y C">{lang === "ES" ? "B2B y B2C (Híbrido)" : "B2B & B2C (Hybrid)"}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Color Corporativo (Hex)</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Color Corporativo (Hex)" : "Brand Color (Hex)"}
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="color"
@@ -896,7 +1171,9 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Teléfono Contacto</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Teléfono Contacto" : "Contact Phone"}
+                  </label>
                   <input
                     type="text"
                     placeholder="Ej. +34 91 123 4567"
@@ -907,7 +1184,9 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Email Oficial</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Email Oficial" : "Official Email"}
+                  </label>
                   <input
                     type="email"
                     placeholder="Ej. info@empresa.com"
@@ -918,7 +1197,9 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">LinkedIn de Empresa</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "LinkedIn de Empresa" : "Company LinkedIn"}
+                  </label>
                   <input
                     type="text"
                     placeholder="linkedin.com/company/..."
@@ -933,19 +1214,23 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Presencia en España</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Presencia en España" : "Spain Presence"}
+                  </label>
                   <select
                     value={formInSpain ? "Sí" : "No"}
                     onChange={(e) => setFormInSpain(e.target.value === "Sí")}
                     className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
                   >
-                    <option value="Sí">Sí, opera en España</option>
-                    <option value="No">No opera en España</option>
+                    <option value="Sí">{lang === "ES" ? "Sí, opera en España" : "Yes, operates in Spain"}</option>
+                    <option value="No">{lang === "ES" ? "No opera en España" : "No operations in Spain"}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Cód. País Sede (Dos Letras)</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Cód. País Sede (Dos Letras)" : "HQ Country Code (Two Letters)"}
+                  </label>
                   <input
                     type="text"
                     placeholder="ES, NL, DE, FR..."
@@ -957,37 +1242,41 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Icono Representativo (Lucide)</label>
+                  <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                    {lang === "ES" ? "Icono Representativo (Lucide)" : "Representative Icon (Lucide)"}
+                  </label>
                   <select
                     value={formLogoName}
                     onChange={(e) => setFormLogoName(e.target.value)}
                     className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
                   >
-                    <option value="building">Sede / Edificio (Default)</option>
-                    <option value="coffee">Café / Hostelería</option>
-                    <option value="book-open">Editorial / Libros</option>
-                    <option value="cup-soda">Bebidas / Vending</option>
-                    <option value="wrench">Automoción / Herramientas</option>
-                    <option value="grape">Vino / Viticultura</option>
-                    <option value="glass-water">Aguas / Refrescos</option>
-                    <option value="graduation-cap">Educación / Cursos</option>
-                    <option value="truck">Logística y Reparto</option>
-                    <option value="credit-card">Finanzas e Intercambios</option>
-                    <option value="heart">Saludable / Bienestar</option>
-                    <option value="languages">Idiomas / Traducción</option>
-                    <option value="gift">Regalos / E-commerce</option>
+                    <option value="building">{lang === "ES" ? "Sede / Edificio (Default)" : "Headquarters / Building"}</option>
+                    <option value="coffee">{lang === "ES" ? "Café / Hostelería" : "Coffee / Hospitality"}</option>
+                    <option value="book-open">{lang === "ES" ? "Editorial / Libros" : "Publishing / Books"}</option>
+                    <option value="cup-soda">{lang === "ES" ? "Bebidas / Vending" : "Drinks / Vending"}</option>
+                    <option value="wrench">{lang === "ES" ? "Automoción / Herramientas" : "Automotive / Tools"}</option>
+                    <option value="grape">{lang === "ES" ? "Vino / Viticultura" : "Wine & Vineyards"}</option>
+                    <option value="glass-water">{lang === "ES" ? "Aguas / Refrescos" : "Soft Drinks & Juices"}</option>
+                    <option value="graduation-cap">{lang === "ES" ? "Educación / Cursos" : "Education & Training"}</option>
+                    <option value="truck">{lang === "ES" ? "Logística y Reparto" : "Logistics & Delivery"}</option>
+                    <option value="credit-card">{lang === "ES" ? "Finanzas e Intercambios" : "Finances & Payments"}</option>
+                    <option value="heart">{lang === "ES" ? "Saludable / Bienestar" : "Health & Wellness"}</option>
+                    <option value="languages">{lang === "ES" ? "Idiomas / Traducción" : "Languages & Translation"}</option>
+                    <option value="gift">{lang === "ES" ? "Regalos / E-commerce" : "Gifts & E-commerce"}</option>
                   </select>
                 </div>
 
               </div>
 
               <div>
-                <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">Resumen / Descripción corta *</label>
+                <label className="block text-xs font-black text-slate-700 uppercase mb-1.5">
+                  {lang === "ES" ? "Resumen / Descripción corta *" : "Summary / Short Description *"}
+                </label>
                 <textarea
                   required
                   rows={2}
                   maxLength={250}
-                  placeholder="Escribe un breve resumen de la actividad comercial de la empresa..."
+                  placeholder={lang === "ES" ? "Escribe un breve resumen de la actividad comercial de la empresa..." : "Write a brief summary of the corporate activities..."}
                   value={formSummary}
                   onChange={(e) => setFormSummary(e.target.value)}
                   className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
@@ -995,10 +1284,12 @@ export default function App() {
               </div>
 
               <div>
-                <label className="block text-xs font-black text-slate-700 uppercase mb-1.5 border-t-2 border-slate-100 pt-3">Observaciones / Notas de Analista (Opcional)</label>
+                <label className="block text-xs font-black text-slate-700 uppercase mb-1.5 border-t-2 border-slate-100 pt-3">
+                  {lang === "ES" ? "Observaciones / Notas de Analista (Opcional)" : "Observations / Analyst Notes (Optional)"}
+                </label>
                 <input
                   type="text"
-                  placeholder="Ej. Datos pendientes de validar con el departamento de compras"
+                  placeholder={lang === "ES" ? "Ej. Datos pendientes de validar con el departamento de compras" : "e.g. Data pending validation with the procurement office"}
                   value={formNote}
                   onChange={(e) => setFormNote(e.target.value)}
                   className="w-full bg-slate-50 border-2 border-slate-900 rounded-none px-3 py-2 text-sm text-slate-900 focus:outline-none focus:bg-white"
@@ -1014,13 +1305,13 @@ export default function App() {
                   }}
                   className="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 px-4 py-2 font-black text-xs uppercase tracking-wider transition cursor-pointer"
                 >
-                  Cancelar
+                  {lang === "ES" ? "Cancelar" : "Cancel"}
                 </button>
                 <button
                   type="submit"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white border-2 border-slate-900 px-5 py-2 font-black text-xs uppercase tracking-wider transition cursor-pointer shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
                 >
-                  Registrar Ficha
+                  {lang === "ES" ? "Registrar Ficha" : "Register Sheet"}
                 </button>
               </div>
 
@@ -1037,7 +1328,9 @@ export default function App() {
               <div className="flex justify-between items-center pb-4 border-b-2 border-slate-200 mb-6 font-sans">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-indigo-650 stroke-[2.5px]" />
-                  <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter">Ficha Técnica Corporativa</h3>
+                  <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter">
+                    {lang === "ES" ? "Ficha Técnica Corporativa" : "Corporate Technical Sheet"}
+                  </h3>
                 </div>
                 <button
                   onClick={() => setSelectedCompanyDetail(null)}
@@ -1079,25 +1372,43 @@ export default function App() {
               <div className="space-y-5">
                 
                 <div>
-                  <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Información Comercial</h5>
+                  <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">
+                    {lang === "ES" ? "Información Comercial" : "Commercial Information"}
+                  </h5>
                   <div className="bg-slate-50 border-2 border-slate-900 p-4 space-y-3 text-xs text-slate-900">
                     <div className="flex justify-between border-b border-slate-200 pb-2">
-                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Canal E-commerce</span>
-                      <span className="font-extrabold uppercase">{selectedCompanyDetail.ecommerce}</span>
+                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                        {lang === "ES" ? "Canal E-commerce" : "E-commerce Channel"}
+                      </span>
+                      <span className="font-extrabold uppercase">
+                        {selectedCompanyDetail.ecommerce === "Sí" ? (lang === "ES" ? "Sí" : "Yes") : (lang === "ES" ? "No" : "No")}
+                      </span>
                     </div>
                     <div className="flex justify-between border-b border-slate-200 pb-2">
-                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Modelo de Ventas</span>
-                      <span className="font-extrabold uppercase">{selectedCompanyDetail.model}</span>
+                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                        {lang === "ES" ? "Modelo de Ventas" : "Sales Model"}
+                      </span>
+                      <span className="font-extrabold uppercase">
+                        {selectedCompanyDetail.model === "B2B y B2C" ? (lang === "ES" ? "B2B y B2C" : "B2B & B2C") : selectedCompanyDetail.model}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Presencia España</span>
-                      <span className="font-extrabold uppercase">{selectedCompanyDetail.inSpain ? "Sí (Oficina local)" : "No (Remoto)"}</span>
+                      <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                        {lang === "ES" ? "Presencia España" : "Spain Presence"}
+                      </span>
+                      <span className="font-extrabold uppercase">
+                        {selectedCompanyDetail.inSpain 
+                          ? (lang === "ES" ? "Sí (Oficina local)" : "Yes (Local headquarters)") 
+                          : (lang === "ES" ? "No (Remoto)" : "No (Remote / Global)")}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Contactos & Canales</h5>
+                  <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">
+                    {lang === "ES" ? "Contactos & Canales" : "Contacts & Channels"}
+                  </h5>
                   <div className="bg-slate-50 border-2 border-slate-900 p-4 space-y-3 text-xs text-slate-950 font-mono">
                     <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
                       <Globe className="w-4 h-4 text-slate-800 shrink-0" />
@@ -1134,13 +1445,13 @@ export default function App() {
                 }}
                 className="flex-1 bg-indigo-600 hover:bg-indigo-700 border-2 border-slate-900 text-white text-xs font-black uppercase tracking-wider py-3 px-4 transition shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] cursor-pointer"
               >
-                Auditar con IA Grounding
+                {lang === "ES" ? "Auditar con IA Grounding" : "Audit with AI Grounding"}
               </button>
               <button
                 onClick={() => setSelectedCompanyDetail(null)}
                 className="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-900 text-xs font-black uppercase py-3 px-5 transition shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] cursor-pointer"
               >
-                Cerrar
+                {lang === "ES" ? "Cerrar" : "Close"}
               </button>
             </div>
           </div>
@@ -1157,10 +1468,10 @@ export default function App() {
                 <div>
                   <div className="flex items-center gap-2 text-indigo-650 text-xs font-black uppercase tracking-wider mb-1">
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>Investigación e Identidad Visual</span>
+                    <span>{lang === "ES" ? "Investigación e Identidad Visual" : "Research & Visual Identity"}</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">
-                    {activeResearchReport ? activeResearchReport.companyName : "Analizando..."}
+                    {activeResearchReport ? activeResearchReport.companyName : (lang === "ES" ? "Analizando..." : "Analyzing...")}
                   </h3>
                 </div>
                 <button
@@ -1182,18 +1493,28 @@ export default function App() {
                     <div className="w-16 h-16 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin"></div>
                     <Sparkles className="w-6 h-6 text-indigo-650 absolute inset-0 m-auto animate-pulse" />
                   </div>
-                  <h4 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">Conectando con Google Search Grounding...</h4>
+                  <h4 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">
+                    {lang === "ES" ? "Conectando con Google Search Grounding..." : "Connecting with Google Search Grounding..."}
+                  </h4>
                   <p className="text-xs text-slate-500 font-medium max-w-sm leading-relaxed">
-                    Consultando motores de búsqueda en tiempo real (2026) y ejecutando modelo <strong className="text-indigo-600 uppercase font-black">gemini-2.5-flash</strong> para recabar perfiles, rediseños de logotipo y recomendaciones visuales de diseño.
+                    {lang === "ES"
+                      ? "Consultando motores de búsqueda en tiempo real (2026) y ejecutando modelo gemini-2.5-flash para recabar perfiles, rediseños de logotipo y recomendaciones visuales de diseño."
+                      : "Querying search engines in real-time (2026) and executing the gemini-2.5-flash model to obtain profiles, logo redesigns, and visual design recommendations."}
                   </p>
                   <div className="mt-8 space-y-2.5 w-full max-w-xs text-xs font-mono">
                     <div className="flex justify-between border-b border-slate-200 pb-1.5 min-w-[200px]">
-                      <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Invocando buscador</span>
+                      <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                        {lang === "ES" ? "Invocando buscador" : "Invoking Search Engine"}
+                      </span>
                       <span className="text-emerald-600 font-bold uppercase">OK</span>
                     </div>
                     <div className="flex justify-between border-b border-slate-200 pb-1.5 min-w-[200px]">
-                      <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Extrayendo fuentes</span>
-                      <span className="text-indigo-600 font-bold uppercase animate-pulse">PROCESANDO...</span>
+                      <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                        {lang === "ES" ? "Extrayendo fuentes" : "Extracting Sources"}
+                      </span>
+                      <span className="text-indigo-600 font-bold uppercase animate-pulse">
+                        {lang === "ES" ? "PROCESANDO..." : "PROCESSING..."}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1203,21 +1524,25 @@ export default function App() {
               {researchError && (
                 <div className="bg-red-50 border-2 border-red-600 p-6 text-center shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]">
                   <AlertCircle className="w-11 h-11 text-red-600 mx-auto mb-3" />
-                  <h4 className="text-lg font-black text-red-950 uppercase tracking-tight mb-1">Fallo de Comunicación Inteligente</h4>
+                  <h4 className="text-lg font-black text-red-950 uppercase tracking-tight mb-1">
+                    {lang === "ES" ? "Fallo de Comunicación Inteligente" : "Smart Communication Failure"}
+                  </h4>
                   <p className="text-xs text-red-900 font-medium mb-4 leading-relaxed">
                     {researchError}
                   </p>
                   <p className="text-xs text-slate-500 italic max-w-md mx-auto mb-4">
-                    Comprueba que el secreto GEMINI_API_KEY se encuentre configurado en la consola Settings de AI Studio.
+                    {lang === "ES"
+                      ? "Comprueba que el secreto GEMINI_API_KEY se encuentre configurado en la consola Settings de AI Studio."
+                      : "Check that the GEMINI_API_KEY secret is configured in the AI Studio Settings console."}
                   </p>
                   <button
                     onClick={() => {
                       const item = companies.find(c => c.id === researchCompanyId);
                       if (item) handlePerformResearch(item);
                     }}
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-black uppercase text-xs px-5 py-2.5 border-2 border-slate-900 transition tracking-wider"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-black uppercase text-xs px-5 py-2.5 border-2 border-slate-900 transition tracking-wider cursor-pointer"
                   >
-                    Reintentar Auditoría
+                    {lang === "ES" ? "Reintentar Auditoría" : "Retry Audit"}
                   </button>
                 </div>
               )}
@@ -1235,10 +1560,12 @@ export default function App() {
                   {activeResearchReport.sources && activeResearchReport.sources.length > 0 && (
                     <div className="border-t-2 border-slate-200 pt-5">
                       <h4 className="text-xs font-black text-amber-600 uppercase tracking-widest mb-2.5">
-                        Fuentes Citadas en la Búsqueda Real
+                        {lang === "ES" ? "Fuentes Citadas en la Búsqueda Real" : "Real-World Cited Sources"}
                       </h4>
                       <p className="text-xs text-slate-500 font-medium mb-3">
-                        La IA recuperó y contrastó información en tiempo real de los siguientes enlaces web:
+                        {lang === "ES"
+                          ? "La IA recuperó y contrastó información en tiempo real de los siguientes enlaces web:"
+                          : "The AI retrieved and analyzed real-time information from the following links:"}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {activeResearchReport.sources.map((src, i) => (
@@ -1258,9 +1585,13 @@ export default function App() {
                     </div>
                   )}
 
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mt-4">
+                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1 mt-4 font-mono">
                     <Info className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Realizado el {activeResearchReport.timestamp}. Análisis basado en Grounding de Google Search.</span>
+                    <span>
+                      {lang === "ES"
+                        ? `Realizado el ${activeResearchReport.timestamp}. Análisis basado en Grounding de Google Search.`
+                        : `Conducted on ${activeResearchReport.timestamp}. Analysis powered by Google Search Grounding.`}
+                    </span>
                   </div>
 
                 </div>

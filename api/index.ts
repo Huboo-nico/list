@@ -35,14 +35,39 @@ app.get("/api/health", (req, res) => {
 // Deep Corporate Research with Google Search Grounding
 app.post("/api/research", async (req, res) => {
   try {
-    const { companyName } = req.body;
+    const { companyName, lang } = req.body;
     if (!companyName) {
       return res.status(400).json({ error: "El nombre de la empresa es obligatorio." });
     }
 
     const ai = getGeminiClient();
+    const isEn = lang === "EN";
     
-    const prompt = `Eres un Consultor Senior de Estrategia de Marca y Análisis de Mercado Corporativo. Realiza una investigación profunda y en tiempo real de la empresa: "${companyName}".
+    const prompt = isEn
+      ? `You are a Senior Brand Strategy & Corporate Market Analysis Consultant. Perform deep, real-time research with web-grounding on the following company: "${companyName}".
+    
+    You must structure your report exactly as follows using clear Markdown headings:
+    
+    # Research Report: ${companyName}
+    
+    ## 1. Corporate Profile & Business Model
+    Describe the company history brief, core value proposition, key geographical markets, and how they generate revenue (e.g., B2B, B2C, subscriptions, etc.).
+    
+    ## 2. Critical Analysis of Visual Identity & Logo
+    Describe in detail the current known logo of this company (its colors, shapes, typography if known, and the conceptual message behind the design). Objectively evaluate the strengths and weaknesses of this branding for the modern 2026 audience.
+    
+    ## 3. UI/UX Optimization and Logo Redesign Proposal
+    Propose a concrete strategy to improve the visual aesthetics & digital experience (UI/UX) of this enterprise:
+    - **Logo Core Strategy**: Which components should be modernized, simplified, or replaced?
+    - **Recommended Color Palette**: Suggest 3-4 specific hex codes accompanied by reasons for their selection.
+    - **Recommended Typography**: Name modern typography choices (such as Inter, Space Grotesk, Cabinet Grotesque, or JetBrains Mono for tech stats).
+    - **UI/UX Guidelines**: Which interactive enhancements should be applied to their landing page or e-commerce shop.
+    
+    ## 4. Digital Presence & E-commerce Innovation
+    Analyze their web commercialization. Is it a modern, seamless digital experience? Is there room to digitize more services (e.g. payment gateway integrations, smart modules, etc.)?
+    
+    Utilize Google Search grounding to base the analysis on current 2026 facts, avoid hallucinations, and gather real credentials.`
+      : `Eres un Consultor Senior de Estrategia de Marca y Análisis de Mercado Corporativo. Realiza una investigación profunda y en tiempo real de la empresa: "${companyName}".
     
     Tu informe debe estructurarse obligatoriamente de la siguiente manera usando títulos claros en Markdown:
     
@@ -80,7 +105,7 @@ app.post("/api/research", async (req, res) => {
     const sources = groundingChunks.map((chunk: any) => {
       if (chunk.web) {
         return {
-          title: chunk.web.title || "Fuente de Google Search",
+          title: chunk.web.title || (isEn ? "Google Search Source" : "Fuente de Google Search"),
           url: chunk.web.uri,
         };
       }
@@ -100,35 +125,38 @@ app.post("/api/research", async (req, res) => {
 // Automatically draft standard fields for a new company via Structured Gemini Call
 app.post("/api/generateCompanyDraft", async (req, res) => {
   try {
-    const { companyName } = req.body;
+    const { companyName, lang } = req.body;
     if (!companyName) {
       return res.status(400).json({ error: "El nombre de la empresa es obligatorio." });
     }
 
     const ai = getGeminiClient();
+    const isEn = lang === "EN";
 
     const response = await ai.models.generateContent({
       model: "gemini-3.5-flash",
-      contents: `Investiga a través de la web actual los datos clave reales de la empresa "${companyName}". Completa todos los campos obligatorios del esquema con información exacta. Si la empresa no existe o no tiene presencia conocida, rellena con estimaciones lógicas basadas en su nombre comercial.`,
+      contents: isEn
+        ? `Research the actual key details of "${companyName}" from the live web. Fill each required field of the schema accurately with EN language representation. If the company is not famous, provide logical estimations based on its name and branding style.`
+        : `Investiga a través de la web actual los datos clave reales de la empresa "${companyName}". Completa todos los campos obligatorios del esquema con información exacta. Si la empresa no existe o no tiene presencia conocida, rellena con estimaciones lógicas basadas en su nombre comercial.`,
       config: {
         tools: [{ googleSearch: {} }],
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            name: { type: Type.STRING, description: "Nombre correcto de la empresa" },
-            sector: { type: Type.STRING, description: "Sector industrial principal en español (ej: Alimentación y Bebidas, Automoción, Logística, Editorial, Vending, Tecnología, etc.)" },
-            ecommerce: { type: Type.STRING, description: "Indica 'Sí' o 'No' basado en si disponen de tienda online o e-commerce directo." },
-            model: { type: Type.STRING, description: "El modelo de ingresos y ventas principal: B2B, B2C, o B2B y B2C." },
-            website: { type: Type.STRING, description: "Sitio web corporativo oficial sin prefijo de protocolo" },
-            phone: { type: Type.STRING, description: "Número de teléfono de contacto de su sede." },
-            email: { type: Type.STRING, description: "Dirección de correo electrónico de soporte u oficinas" },
-            linkedin: { type: Type.STRING, description: "Enlace representativo de LinkedIn corporativo" },
-            inSpain: { type: Type.BOOLEAN, description: "true si opera o tiene sede física en España, de lo contrario false" },
-            flagCode: { type: Type.STRING, description: "Código de país de dos letras ISO" },
-            brandColor: { type: Type.STRING, description: "Color hexadecimal corporativo principal, incluyendo #" },
-            summary: { type: Type.STRING, description: "Breve resumen de 2 oraciones en español que defina la actividad de la empresa." },
-            logoIconName: { type: Type.STRING, description: "Nombre de icono representativo de Lucide-React" },
+            name: { type: Type.STRING, description: isEn ? "Correct spelling of company name" : "Nombre correcto de la empresa" },
+            sector: { type: Type.STRING, description: isEn ? "Primary industry sector in English (e.g. Food & Beverages, Automotive, Logistics, Publishing, Healthcare, SaaS, Technology, Retail)" : "Sector industrial principal en español (ej: Alimentación y Bebidas, Automoción, Logística, Editorial, Vending, Tecnología, etc.)" },
+            ecommerce: { type: Type.STRING, description: isEn ? "Indicate 'Yes' or 'No' based on whether they have a live direct online shop or client e-commerce portal" : "Indica 'Sí' o 'No' basado en si disponen de tienda online o e-commerce directo." },
+            model: { type: Type.STRING, description: isEn ? "The primary sales model: B2B, B2C, or B2B & B2C" : "El modelo de ingresos y ventas principal: B2B, B2C, o B2B y B2C." },
+            website: { type: Type.STRING, description: "Official corporate website domain without protocol prefix" },
+            phone: { type: Type.STRING, description: "Contact phone number of headquarters" },
+            email: { type: Type.STRING, description: "General/support business email address" },
+            linkedin: { type: Type.STRING, description: "Representative company LinkedIn handle/URL" },
+            inSpain: { type: Type.BOOLEAN, description: isEn ? "true if they operate or have branches/assets in Spain, otherwise false" : "true si opera o tiene sede física en España, de lo contrario false" },
+            flagCode: { type: Type.STRING, description: "Two-letter ISO country code of headquarters" },
+            brandColor: { type: Type.STRING, description: "Primary hex color code, including #" },
+            summary: { type: Type.STRING, description: isEn ? "Quick 2-sentence summary in English defining their business activity." : "Breve resumen de 2 oraciones en español que defina la actividad de la empresa." },
+            logoIconName: { type: Type.STRING, description: "Name of representative icon from Lucide-React (e.g., coffee, book-open, cup-soda, wrench, grape, glass-water, graduation-cap, truck, credit-card, heart, gift, building)" },
           },
           required: [
             "name",
