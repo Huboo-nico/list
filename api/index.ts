@@ -1,8 +1,10 @@
 import express from "express";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
+import path from "path";
 
-dotenv.config();
+// Ensure dotenv loads the .env from process.cwd() reliably regardless of runtime execution folder
+dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 const app = express();
 app.use(express.json());
@@ -13,7 +15,9 @@ function getGeminiClient(): GoogleGenAI {
   if (!aiClient) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY environment variable is not defined. Please configure it in Vercel environment variables.");
+      throw new Error(
+        "El secreto GEMINI_API_KEY no está configurado. Agrégalo en la sección Settings > Secrets de AI Studio o como variable de entorno en las configuraciones de Vercel (Environment Variables)."
+      );
     }
     aiClient = new GoogleGenAI({
       apiKey: apiKey,
@@ -25,6 +29,91 @@ function getGeminiClient(): GoogleGenAI {
     });
   }
   return aiClient;
+}
+
+/**
+ * Executes a Gemini model request with automated exponential retry for rate limit keys (429 / RESOURCE_EXHAUSTED)
+ * and seamless dynamic fallbacks to increasingly stable lower-quota model options.
+ */
+async function generateContentWithFallback(
+  ai: GoogleGenAI,
+  baseParams: {
+    model?: string;
+    contents: any;
+    config?: any;
+  }
+) {
+  // Ordered array of models from premium-preview to standard-free-friendly tiers
+  // gemini-3.5-flash -> gemini-flash-latest -> gemini-3.1-flash-lite
+  const preferredModel = baseParams.model || process.env.GEMINI_MODEL || "gemini-3.5-flash";
+  const modelFallbackSequence = [
+    preferredModel,
+    "gemini-flash-latest",
+    "gemini-3.1-flash-lite"
+  ];
+
+  // De-duplicate model values in sequence
+  const uniqueModels = Array.from(new Set(modelFallbackSequence));
+  let lastError: any = null;
+
+  for (let i = 0; i < uniqueModels.length; i++) {
+    const currentModel = uniqueModels[i];
+    
+    // Up to 3 attempts with exponential delay for each model to absorb intermittent spikes
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        console.log(`[API Research] Intentando consulta con modelo: "${currentModel}" (Intento ${attempt}/3)`);
+        
+        const params = {
+          ...baseParams,
+          model: currentModel
+        };
+
+        const response = await ai.models.generateContent(params);
+        console.log(`[API Research] Éxito absoluto con el modelo: "${currentModel}"`);
+        return response;
+      } catch (err: any) {
+        lastError = err;
+        
+        // Extract status or inspect error message content for rate limits & quota failures
+        const errorMessage = (err?.message || "").toLowerCase();
+        const isQuotaOrRateLimit =
+          err?.status === 429 ||
+          err?.statusCode === 429 ||
+          errorMessage.includes("429") ||
+          errorMessage.includes("quota") ||
+          errorMessage.includes("exhausted") ||
+          errorMessage.includes("limit");
+
+        console.warn(
+          `[API Research] Error con el modelo "${currentModel}" (Intento ${attempt}/3):`,
+          err.message || err
+        );
+
+        if (isQuotaOrRateLimit) {
+          if (attempt < 3) {
+            // Apply exponential delay: 1.5s, 3s
+            const delayMs = attempt * 1500;
+            console.log(`[API Research] Límite de cuota o cuota de servicio agotada. Aplicando pausa de ${delayMs}ms antes de reintentar...`);
+            await new Promise((resolve) => setTimeout(resolve, delayMs));
+            continue; // Proceed with retry of same model
+          } else {
+            console.log(`[API Research] Modelo "${currentModel}" agotó sus reintentos por cuota de uso.`);
+          }
+        }
+        
+        // Break inner loop immediately to try the next model if it is not a retryable quota issue (e.g. invalid parameters or unsupported features on a model)
+        break;
+      }
+    }
+  }
+
+  // If we exhaust all models in the fallback chain, construct a beautifully descriptive error
+  const userFriendlyMessage = lastError?.message || "Servicio no disponible por exceso de cuota.";
+  throw new Error(
+    `Se agotaron los modelos de respaldo y reintentos automáticos. Detalle técnico: ${userFriendlyMessage} ` +
+    `Verifica si tu clave de API de Gemini ha superado los límites de su plan o actualízala desde el panel de control correspondiente.`
+  );
 }
 
 // Health check endpoint
@@ -91,7 +180,7 @@ app.post("/api/research", async (req, res) => {
     
     Utiliza el motor de Google Search para basarte en hechos reales, evitar alucinaciones, y encontrar datos fidedignos y de actualidad.`;
 
-    const response = await ai.models.generateContent({
+    const response = await generateContentWithFallback(ai, {
       model: "gemini-3.5-flash",
       contents: prompt,
       config: {
@@ -133,7 +222,7 @@ app.post("/api/generateCompanyDraft", async (req, res) => {
     const ai = getGeminiClient();
     const isEn = lang === "EN";
 
-    const response = await ai.models.generateContent({
+    const response = await generateContentWithFallback(ai, {
       model: "gemini-3.5-flash",
       contents: isEn
         ? `Research the actual key details of "${companyName}" from the live web. Fill each required field of the schema accurately with EN language representation. If the company is not famous, provide logical estimations based on its name and branding style.`

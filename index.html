@@ -4,6 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Corporate Research Hub - Inteligencia de Mercado</title>
+    <script>
+      // Polyfill and patch fix for environments with read-only window.fetch (like sandboxed iframes or certain extensions)
+      try {
+        if (window && window.fetch) {
+          const originalFetch = window.fetch;
+          let currentFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            get() {
+              return currentFetch;
+            },
+            set(val) {
+              currentFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        }
+      } catch (e) {
+        console.warn("Unable to patch window.fetch setter:", e);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
